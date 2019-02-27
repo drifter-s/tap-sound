@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Rectangles</title>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.11.5/paper-full.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/howler/1.1.28/howler.js"></script>
+	<script type="text/javascript" src="data.js"></script>
+	<link rel="stylesheet" type="text/css" href="rectangles.css">
+
+	<script type="text/paperscript" canvas="myCanvas">
+		
+
+		var rectangles = [];
+
+		function onKeyDown(event) {
+			if(data[event.key]){
+				var maxPoint = new Point(view.size.width, view.size.height);
+				var randomPoint = Point.random();
+				var point = maxPoint * randomPoint;
+				var newRectangle = new Path.Rectangle(point, 200)
+				newRectangle.fillColor = data[event.key].color;
+				data[event.key].sound.play();
+				rectangles.push(newRectangle);
+			}
+		}
+
+		function onFrame(event){
+      for(var i = 0; i < rectangles.length; i++){
+        rectangles[i].scale(0.9);
+        rectangles[i].rotate(8);
+        rectangles[i].fillColor.hue += 1;
+        if(rectangles[i].area < 1){
+        	rectangles[i].remove();
+          rectangles.splice(i, 1);
+          console.log(rectangles);
+        }
+      }
+    }
+	</script>
+</head>
+<body>
+	<canvas id="myCanvas" resize></canvas>
+</body>
+</html>
